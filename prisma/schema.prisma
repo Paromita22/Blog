@@ -13,7 +13,46 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id        String     @id @default(uuid())
+  email     String     @unique
+  name      String?
+  password  String     // For secure login
+  blogs     Blog[]     // Blogs written by this user
+  bookmarks Bookmark[] // Wishlisted/Bookmarked blogs
+  likes     Like[]     // Blogs liked by this user
+  createdAt DateTime   @default(now())
+}
+
+model Blog {
+  id          String     @id @default(uuid())
+  title       String
+  content     String     @db.Text
+  category    String     // e.g., "Philosophy", "Poetry", "Life"
+  views       Int        @default(0) // For sorting popular blogs
+  authorId    String
+  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  bookmarks   Bookmark[]
+  likes       Like[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Bookmark {
+  id     String @id @default(uuid())
+  userId String
+  blogId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blog   Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, blogId]) // Ensures a user can only bookmark a blog once
+}
+
+model Like {
+  id     String @id @default(uuid())
+  userId String
+  blogId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blog   Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, blogId]) // Ensures a user can only like a blog once
 }
