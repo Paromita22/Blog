@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { prisma } from "../../lib/prisma";
 import Link from "next/link";
+import BlogRow from "./BlogRow";
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
@@ -33,12 +34,7 @@ export default async function Dashboard() {
 
         <ul className="space-y-4">
           {myBlogs.map((blog) => (
-            <li key={blog.id} className="border border-gray-700 rounded-md p-4">
-              <h2 className="text-xl">{blog.title}</h2>
-              <p className="text-sm text-gray-500">
-                {blog.category} · {blog.views} views
-              </p>
-            </li>
+            <BlogRow key={blog.id} blog={blog} />
           ))}
         </ul>
       </div>
