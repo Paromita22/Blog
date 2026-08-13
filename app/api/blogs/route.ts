@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "../../../lib/prisma";
+import { blogSchema } from "@/lib/validation";
 
 // POST: Create a new blog (PROTECTED ROUTE)
 export async function POST(req: Request) {
@@ -17,16 +18,21 @@ export async function POST(req: Request) {
       );
     }
 
-    // 2. Parse the incoming blog data
+    // 2. Parse and validate the incoming blog data
     const body = await req.json();
-    const { title, content, category } = body;
+    const parsed = blogSchema.safeParse(body);
 
-    if (!title || !content || !category) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { message: "Missing required fields" },
+        {
+          message: "Invalid input",
+          errors: parsed.error.flatten().fieldErrors,
+        },
         { status: 400 },
       );
     }
+
+    const { title, content, category } = parsed.data;
 
     // 3. Save the blog to the database and link it to the logged-in user
     const newBlog = await prisma.blog.create({

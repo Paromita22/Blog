@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { prisma } from "../../../../lib/prisma";
+import { blogSchema } from "@/lib/validation";
 
 // GET a single blog (public)
 export async function GET(
@@ -40,7 +41,14 @@ export async function PUT(
   }
 
   const body = await req.json();
-  const { title, content, category } = body;
+  const parsed = blogSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { message: "Invalid input", errors: parsed.error.flatten().fieldErrors },
+      { status: 400 },
+    );
+  }
+  const { title, content, category } = parsed.data;
 
   const updated = await prisma.blog.update({
     where: { id },

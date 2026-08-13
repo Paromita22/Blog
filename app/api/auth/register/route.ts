@@ -1,14 +1,28 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { registerSchema } from "@/lib/validation";
 
 export async function POST(req: Request) {
   try {
     console.log("1. API hit! Parsing body...");
     const body = await req.json();
-    const { email, name, password } = body;
+
+    console.log("1b. Validating input...");
+    const parsed = registerSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          message: "Invalid input",
+          errors: parsed.error.flatten().fieldErrors,
+        },
+        { status: 400 },
+      );
+    }
+    const { email, name, password } = parsed.data;
 
     console.log("2. Checking for existing user...");
+
     const existingUser = await prisma.user.findUnique({
       where: { email: email },
     });
