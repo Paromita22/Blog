@@ -2,10 +2,23 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { registerSchema } from "@/lib/validation";
+import { rateLimit } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
   try {
     console.log("1. API hit! Parsing body...");
+
+    // inside POST, before parsing body:
+    const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+    const { allowed } = rateLimit(`register:${ip}`, 5, 60_000); // 5 requests per 60s per IP
+
+    if (!allowed) {
+      return NextResponse.json(
+        { message: "Too many attempts. Please try again in a minute." },
+        { status: 429 },
+      );
+    }
+
     const body = await req.json();
 
     console.log("1b. Validating input...");
