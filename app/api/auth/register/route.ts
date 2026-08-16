@@ -8,7 +8,6 @@ export async function POST(req: Request) {
   try {
     console.log("1. API hit! Parsing body...");
 
-    // inside POST, before parsing body:
     const ip = req.headers.get("x-forwarded-for") ?? "unknown";
     const { allowed } = rateLimit(`register:${ip}`, 5, 60_000); // 5 requests per 60s per IP
 
