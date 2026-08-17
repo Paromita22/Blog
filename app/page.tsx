@@ -66,7 +66,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              Notes from an unfinished mind
+              Notes from a disorganized mind
             </motion.p>
 
             <h1 className="font-display text-5xl md:text-7xl font-medium tracking-tight leading-[1.05]">
