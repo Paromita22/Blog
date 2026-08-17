@@ -11,6 +11,7 @@ import { useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import FloatingPaper from "./components/FloatingPaper";
 import PaperBurst from "./components/PaperBurst";
+import AuthorNote from "./components/AuthorNote";
 
 const headline = "Reluctant Realist's Tales.";
 
@@ -139,6 +140,7 @@ export default function Home() {
           </motion.div>
         </section>
       </main>
+      <AuthorNote />
       <FeaturedBlogs />
       <Footer />
     </>
