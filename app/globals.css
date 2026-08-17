@@ -1,6 +1,35 @@
 @import "tailwindcss";
 
 :root {
+  --ink: #0b0b0c;
+  --paper: #ede8de;
+  --muted: #8c8578;
+  --ember: #9a3b2e;
+  --ember-dim: #5c2620;
+  --line: #2a2a28;
+}
+
+.font-display {
+  font-family: var(--font-display), serif;
+}
+.font-body {
+  font-family: var(--font-body), serif;
+}
+.font-mono {
+  font-family: var(--font-mono), monospace;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:root {
   --background: #ffffff;
   --foreground: #171717;
 }
