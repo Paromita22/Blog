@@ -54,7 +54,8 @@ export default function FeaturedBlogs() {
                   {blog.title}
                 </h3>
                 <p className="font-mono text-xs text-[var(--muted)] mt-2 uppercase tracking-wider">
-                  {blog.category} · {blog.author.name ?? "Anonymous"}
+                  <span className="text-[var(--ember)]">{blog.category}</span> ·{" "}
+                  {blog.author.name ?? "Anonymous"}
                 </p>
               </div>
               <span className="font-mono text-xs text-[var(--muted)] shrink-0 ml-4">

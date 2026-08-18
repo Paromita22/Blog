@@ -44,7 +44,7 @@ export default function NavBar() {
           </>
         ) : (
           <Link
-            href="/api/auth/signin"
+            href="/signin"
             className="text-[var(--muted)] hover:text-[var(--paper)] transition-colors"
           >
             Sign In

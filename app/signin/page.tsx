@@ -1,16 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import PageShell from "../components/PageShell";
 
-export default function SignUp() {
+export default function SignIn() {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -21,19 +20,18 @@ export default function SignUp() {
     setError("");
     setLoading(true);
 
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, name, password }),
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
     });
 
     setLoading(false);
 
-    if (res.ok) {
-      router.push("/signin");
+    if (res?.error) {
+      setError("Invalid email or password.");
     } else {
-      const data = await res.json();
-      setError(data.message || "Something went wrong");
+      router.push("/dashboard");
     }
   }
 
@@ -48,9 +46,9 @@ export default function SignUp() {
         >
           <div className="text-center space-y-2">
             <p className="font-mono text-xs tracking-[0.3em] uppercase text-[var(--muted)]">
-              Join the notes
+              Welcome back
             </p>
-            <h1 className="font-display text-3xl">Sign Up</h1>
+            <h1 className="font-display text-3xl">Sign In</h1>
           </div>
 
           {error && (
@@ -93,12 +91,6 @@ export default function SignUp() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full bg-transparent border border-[var(--line)] focus:border-[var(--ember)] outline-none rounded-sm p-3 text-sm transition-colors"
-            />
-            <input
               type="email"
               placeholder="Email"
               value={email}
@@ -106,6 +98,7 @@ export default function SignUp() {
               required
               className="w-full bg-transparent border border-[var(--line)] focus:border-[var(--ember)] outline-none rounded-sm p-3 text-sm transition-colors"
             />
+
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -124,22 +117,31 @@ export default function SignUp() {
               </button>
             </div>
 
+            <div className="text-right">
+              <Link
+                href="/forgot-password"
+                className="font-mono text-xs text-[var(--muted)] hover:text-[var(--ember)] transition-colors"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
             <button
               type="submit"
               disabled={loading}
               className="w-full bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--ember)] hover:text-[var(--paper)] transition-colors rounded-sm py-3 font-mono text-xs tracking-widest uppercase disabled:opacity-50"
             >
-              {loading ? "Creating account..." : "Create Account"}
+              {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
           <p className="text-center font-mono text-xs text-[var(--muted)]">
-            Already have an account?{" "}
+            No account?{" "}
             <Link
-              href="/signin"
+              href="/signup"
               className="underline hover:text-[var(--paper)] transition-colors"
             >
-              Sign in
+              Sign up
             </Link>
           </p>
         </motion.div>

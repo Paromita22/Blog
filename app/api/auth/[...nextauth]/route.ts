@@ -68,12 +68,16 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     // This callback passes the user ID from the JWT to the browser session
+
     async session({ session, token }) {
       if (session.user && token.id) {
         (session.user as any).id = token.id;
       }
       return session;
     },
+  },
+  pages: {
+    signIn: "/signin",
   },
 };
 

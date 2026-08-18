@@ -123,7 +123,7 @@ export default function Home() {
               ) : (
                 <>
                   <Link
-                    href="/api/auth/signin"
+                    href="/signin"
                     className="px-6 py-2 bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--ember)] hover:text-[var(--paper)] transition-colors rounded-sm text-xs font-mono tracking-widest uppercase"
                   >
                     Sign In
