@@ -3,10 +3,15 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "../../../../lib/prisma";
 import bcrypt from "bcryptjs";
 import { rateLimit } from "../../../../lib/rateLimit";
+import GoogleProvider from "next-auth/providers/google";
 
 // This is the core configuration for how your users log in
 export const authOptions: NextAuthOptions = {
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     CredentialsProvider({
       name: "Email and Password",
       credentials: {
@@ -60,15 +65,29 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    // This callback passes the user ID to the JWT
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        const existing = await prisma.user.findUnique({
+          where: { email: user.email! },
+        });
+        if (!existing) {
+          await prisma.user.create({
+            data: {
+              email: user.email!,
+              name: user.name,
+              password: "", // Google users don't need a local password
+            },
+          });
+        }
+      }
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    // This callback passes the user ID from the JWT to the browser session
-
     async session({ session, token }) {
       if (session.user && token.id) {
         (session.user as any).id = token.id;
