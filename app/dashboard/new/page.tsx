@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import PageShell from "../../components/PageShell";
 
 export default function NewPost() {
   const router = useRouter();
@@ -29,26 +30,31 @@ export default function NewPost() {
   }
 
   return (
-    <main className="min-h-screen bg-[#121212] text-[#e0e0e0] p-8">
-      <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-4">
-        <h1 className="text-3xl font-semibold mb-4">New Post</h1>
+    <PageShell>
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-2xl mx-auto px-8 space-y-4"
+      >
+        <h1 className="font-display text-4xl mb-6">New Post</h1>
 
-        {error && <p className="text-red-400">{error}</p>}
+        {error && (
+          <p className="text-[var(--ember)] font-mono text-sm">{error}</p>
+        )}
 
         <input
-          className="w-full bg-[#1e1e1e] border border-gray-700 rounded-md p-3"
+          className="w-full bg-transparent border border-[var(--line)] focus:border-[var(--ember)] outline-none rounded-sm p-3 text-sm transition-colors"
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <input
-          className="w-full bg-[#1e1e1e] border border-gray-700 rounded-md p-3"
+          className="w-full bg-transparent border border-[var(--line)] focus:border-[var(--ember)] outline-none rounded-sm p-3 text-sm transition-colors"
           placeholder="Category (e.g. Philosophy, Poetry)"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         />
         <textarea
-          className="w-full bg-[#1e1e1e] border border-gray-700 rounded-md p-3 h-64"
+          className="w-full bg-transparent border border-[var(--line)] focus:border-[var(--ember)] outline-none rounded-sm p-3 h-64 font-body text-base transition-colors"
           placeholder="Write your thoughts..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -56,11 +62,11 @@ export default function NewPost() {
 
         <button
           type="submit"
-          className="px-6 py-2 bg-white text-black rounded-md text-sm uppercase tracking-widest"
+          className="px-6 py-2 bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--ember)] hover:text-[var(--paper)] transition-colors rounded-sm text-xs font-mono tracking-widest uppercase"
         >
           Publish
         </button>
       </form>
-    </main>
+    </PageShell>
   );
 }

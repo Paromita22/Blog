@@ -1,5 +1,6 @@
 import { prisma } from "../../../lib/prisma";
 import { notFound } from "next/navigation";
+import PageShell from "../../components/PageShell";
 
 export default async function BlogPost({
   params,
@@ -19,19 +20,24 @@ export default async function BlogPost({
   if (!blog) return notFound();
 
   return (
-    <main className="min-h-screen bg-[#121212] text-[#e0e0e0] p-8">
-      <article className="max-w-2xl mx-auto space-y-6">
-        <div>
-          <h1 className="text-4xl font-semibold">{blog.title}</h1>
-          <p className="text-sm text-gray-500 mt-2">
-            {blog.category} · by {blog.author.name ?? "Anonymous"} ·{" "}
-            {blog.views} views
+    <PageShell>
+      <article className="max-w-2xl mx-auto px-8 space-y-8">
+        <div className="space-y-4">
+          <span className="inline-block px-4 py-1.5 rounded-full border border-[var(--ember)] text-[var(--ember)] text-xs font-mono tracking-widest uppercase">
+            {blog.category}
+          </span>
+          <h1 className="font-display text-4xl md:text-5xl leading-tight">
+            {blog.title}
+          </h1>
+          <p className="font-mono text-xs text-[var(--muted)] uppercase tracking-wider">
+            by {blog.author.name ?? "Anonymous"} · {blog.views} views
           </p>
         </div>
-        <div className="prose prose-invert whitespace-pre-wrap leading-relaxed">
+        <div className="h-px bg-[var(--line)]" />
+        <div className="font-body text-lg leading-relaxed whitespace-pre-wrap text-[var(--paper)]">
           {blog.content}
         </div>
       </article>
-    </main>
+    </PageShell>
   );
 }

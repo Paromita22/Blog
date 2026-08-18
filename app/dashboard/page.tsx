@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { prisma } from "../../lib/prisma";
 import Link from "next/link";
+import PageShell from "../components/PageShell";
 import BlogRow from "./BlogRow";
 
 export default async function Dashboard() {
@@ -14,20 +15,25 @@ export default async function Dashboard() {
   });
 
   return (
-    <main className="min-h-screen bg-[#121212] text-[#e0e0e0] p-8">
-      <div className="max-w-3xl mx-auto space-y-6">
+    <PageShell>
+      <div className="max-w-3xl mx-auto px-8 space-y-10">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-semibold">Your Posts</h1>
+          <div className="space-y-2">
+            <p className="font-mono text-xs tracking-[0.3em] uppercase text-[var(--muted)]">
+              Your Desk
+            </p>
+            <h1 className="font-display text-4xl md:text-5xl">Your Posts</h1>
+          </div>
           <Link
             href="/dashboard/new"
-            className="px-4 py-2 bg-white text-black rounded-md text-sm uppercase tracking-widest"
+            className="px-6 py-2 bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--ember)] hover:text-[var(--paper)] transition-colors rounded-sm text-xs font-mono tracking-widest uppercase shrink-0"
           >
             + New Post
           </Link>
         </div>
 
         {myBlogs.length === 0 && (
-          <p className="text-gray-400 italic">
+          <p className="text-[var(--muted)] italic font-body py-8">
             You haven't written anything yet.
           </p>
         )}
@@ -38,6 +44,6 @@ export default async function Dashboard() {
           ))}
         </ul>
       </div>
-    </main>
+    </PageShell>
   );
 }

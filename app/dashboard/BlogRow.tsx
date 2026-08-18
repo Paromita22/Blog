@@ -20,28 +20,32 @@ export default function BlogRow({
     setDeleting(false);
 
     if (res.ok) {
-      router.refresh(); // re-fetches the server component's data
+      router.refresh();
     } else {
       alert("Failed to delete post.");
     }
   }
 
   return (
-    <li className="border border-gray-700 rounded-md p-4 flex justify-between items-center">
+    <li className="border border-[var(--line)] hover:border-[var(--ember)] transition-colors rounded-sm p-5 flex justify-between items-center">
       <div>
-        <h2 className="text-xl">{blog.title}</h2>
-        <p className="text-sm text-gray-500">
-          {blog.category} · {blog.views} views
+        <h2 className="font-display text-xl">{blog.title}</h2>
+        <p className="font-mono text-xs text-[var(--muted)] mt-1 uppercase tracking-wider">
+          <span className="text-[var(--ember)]">{blog.category}</span> ·{" "}
+          {blog.views} views
         </p>
       </div>
-      <div className="flex gap-3 text-sm">
-        <Link href={`/dashboard/edit/${blog.id}`} className="underline">
+      <div className="flex gap-4 font-mono text-xs tracking-widest uppercase shrink-0">
+        <Link
+          href={`/dashboard/edit/${blog.id}`}
+          className="text-[var(--muted)] hover:text-[var(--paper)] transition-colors"
+        >
           Edit
         </Link>
         <button
           onClick={handleDelete}
           disabled={deleting}
-          className="text-red-400 underline disabled:opacity-50"
+          className="text-[var(--ember)] hover:opacity-70 transition-opacity disabled:opacity-50"
         >
           {deleting ? "Deleting..." : "Delete"}
         </button>
