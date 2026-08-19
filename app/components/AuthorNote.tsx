@@ -40,19 +40,15 @@ export default function AuthorNote() {
         transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
       >
         <p className="font-mono text-xs tracking-[0.3em] uppercase text-[var(--muted)]">
-          A Note From the Author
+          A Note From the Creator
         </p>
 
         <p className="font-body italic text-xl md:text-2xl leading-relaxed text-[var(--paper)]">
-          "I don't write to be understood. I write because the noise in my head
-          needs somewhere to land that isn't another person's patience."
+          "Sticking around to see how this mess unfolds, and if I can beat the world in the race to ruin everything"
         </p>
 
-        <p className="font-body text-base leading-relaxed text-[var(--muted)]">
-          This is a record of the thoughts I couldn't finish arguing with —
-          half-formed, unedited, occasionally furious. If something here finds
-          you at the right moment, good. If not, it was never really written for
-          anyone but me.
+        <p className="font-body text-base leading-relaxed text-[var(--muted)] lg:text-justify">
+          The idea originated from the desire for belonging. If not the writer, perhaps the writings should have a place of their own. I am here just to seek a retreat from the crowded feeds and endless scroll to a personal quieter corner. You are welcome to join me here to share some of your bright ideas or mundane melancholy.
         </p>
 
         <p className="font-mono text-xs tracking-widest text-[var(--muted)] pt-2">

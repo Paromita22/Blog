@@ -58,7 +58,7 @@ export async function PUT(
   return NextResponse.json(updated, { status: 200 });
 }
 
-// DELETE: remove a blog (owner only)
+// DELETE: remove a blog (owner or admin)
 export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -73,7 +73,11 @@ export async function DELETE(
   if (!blog) {
     return NextResponse.json({ message: "Not found" }, { status: 404 });
   }
-  if (blog.authorId !== (session.user as any).id) {
+
+  const userId = (session.user as any).id;
+  const role = (session.user as any).role;
+
+  if (blog.authorId !== userId && role !== "ADMIN") {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 

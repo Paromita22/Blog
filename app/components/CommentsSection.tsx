@@ -9,6 +9,7 @@ type Comment = {
   id: string;
   content: string;
   createdAt: string;
+  userId: string;
   user: {
     name: string | null;
     role: "USER" | "ADMIN";
@@ -23,6 +24,9 @@ export default function CommentsSection({ blogId }: { blogId: string }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
+  const currentUserId = (session?.user as any)?.id;
+  const currentUserRole = (session?.user as any)?.role;
+
   useEffect(() => {
     fetch(`/api/blogs/${blogId}/comments`)
       .then((res) => res.json())
@@ -36,18 +40,18 @@ export default function CommentsSection({ blogId }: { blogId: string }) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!content.trim()) return;
-    
+
     setError("");
     setSubmitting(true);
-    
+
     const res = await fetch(`/api/blogs/${blogId}/comments`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content }),
     });
-    
+
     setSubmitting(false);
-    
+
     if (res.ok) {
       const data = await res.json();
       setComments([data.comment, ...comments]);
@@ -55,6 +59,20 @@ export default function CommentsSection({ blogId }: { blogId: string }) {
     } else {
       const data = await res.json();
       setError(data.message || "Failed to post comment");
+    }
+  }
+
+  async function handleDelete(commentId: string) {
+    if (!confirm("Delete this reflection?")) return;
+
+    const res = await fetch(`/api/blogs/${blogId}/comments/${commentId}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      setComments((prev) => prev.filter((c) => c.id !== commentId));
+    } else {
+      alert("Failed to delete comment.");
     }
   }
 
@@ -97,35 +115,49 @@ export default function CommentsSection({ blogId }: { blogId: string }) {
         ) : comments.length === 0 ? (
           <p className="font-mono text-xs text-[var(--muted)] italic">Be the first to reflect on this piece.</p>
         ) : (
-          comments.map((comment) => (
-            <motion.div
-              key={comment.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-2"
-            >
-              <div className="flex items-center gap-2 font-mono text-xs tracking-wider">
-                <span className={comment.user.role === "ADMIN" ? "text-[var(--ember)]" : "text-[var(--paper)]"}>
-                  {comment.user.name || "Anonymous"}
-                </span>
-                {comment.user.role === "ADMIN" && (
-                  <span className="px-1.5 py-0.5 border border-[var(--ember)] text-[var(--ember)] text-[10px] rounded-full uppercase">
-                    Author
+          comments.map((comment) => {
+            const canDelete = currentUserId === comment.userId || currentUserRole === "ADMIN";
+            return (
+              <motion.div
+                key={comment.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-2"
+              >
+                <div className="flex items-center gap-2 font-mono text-xs tracking-wider">
+                  <span className={comment.user.role === "ADMIN" ? "text-[var(--ember)]" : "text-[var(--paper)]"}>
+                    {comment.user.name || "Anonymous"}
                   </span>
-                )}
-                <span className="text-[var(--muted)]">·</span>
-                <span className="text-[var(--muted)]">
-                  {new Date(comment.createdAt).toLocaleDateString(undefined, {
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </span>
-              </div>
-              <p className="font-body text-sm text-[var(--paper)] whitespace-pre-wrap">
-                {comment.content}
-              </p>
-            </motion.div>
-          ))
+                  {comment.user.role === "ADMIN" && (
+                    <span className="px-1.5 py-0.5 border border-[var(--ember)] text-[var(--ember)] text-[10px] rounded-full uppercase">
+                      Author
+                    </span>
+                  )}
+                  <span className="text-[var(--muted)]">·</span>
+                  <span className="text-[var(--muted)]">
+                    {new Date(comment.createdAt).toLocaleDateString(undefined, {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </span>
+                  {canDelete && (
+                    <>
+                      <span className="text-[var(--muted)]">·</span>
+                      <button
+                        onClick={() => handleDelete(comment.id)}
+                        className="text-[var(--muted)] hover:text-[var(--ember)] transition-colors"
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </div>
+                <p className="font-body text-sm text-[var(--paper)] whitespace-pre-wrap">
+                  {comment.content}
+                </p>
+              </motion.div>
+            );
+          })
         )}
       </div>
     </div>

@@ -2,6 +2,9 @@ import Link from "next/link";
 import { prisma } from "../../lib/prisma";
 import PageShell from "../components/PageShell";
 import FadeIn from "../components/FadeIn";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import DeleteBlogButton from "../components/DeleteBlogButton";
 
 const PAGE_SIZE = 6;
 
@@ -11,6 +14,8 @@ export default async function BlogsPage({
   searchParams: Promise<{ page?: string; category?: string }>;
 }) {
   const params = await searchParams;
+  const session = await getServerSession(authOptions);
+  const isAdmin = (session?.user as any)?.role === "ADMIN";
   const page = Number(params.page) || 1;
   const category = params.category;
 
@@ -55,11 +60,10 @@ export default async function BlogsPage({
         <FadeIn className="flex gap-3 flex-wrap">
           <Link
             href="/blogs"
-            className={`px-4 py-1.5 rounded-full border text-xs font-mono tracking-widest uppercase transition-colors ${
-              !category
-                ? "bg-[var(--ember)] border-[var(--ember)] text-[var(--paper)]"
-                : "border-[var(--line)] text-[var(--muted)] hover:border-[var(--ember)] hover:text-[var(--ember)]"
-            }`}
+            className={`px-4 py-1.5 rounded-full border text-xs font-mono tracking-widest uppercase transition-colors ${!category
+              ? "bg-[var(--ember)] border-[var(--ember)] text-[var(--paper)]"
+              : "border-[var(--line)] text-[var(--muted)] hover:border-[var(--ember)] hover:text-[var(--ember)]"
+              }`}
           >
             All
           </Link>
@@ -67,11 +71,10 @@ export default async function BlogsPage({
             <Link
               key={c.category}
               href={`/blogs?category=${encodeURIComponent(c.category)}`}
-              className={`px-4 py-1.5 rounded-full border text-xs font-mono tracking-widest uppercase transition-colors ${
-                category === c.category
-                  ? "bg-[var(--ember)] border-[var(--ember)] text-[var(--paper)]"
-                  : "border-[var(--line)] text-[var(--muted)] hover:border-[var(--ember)] hover:text-[var(--ember)]"
-              }`}
+              className={`px-4 py-1.5 rounded-full border text-xs font-mono tracking-widest uppercase transition-colors ${category === c.category
+                ? "bg-[var(--ember)] border-[var(--ember)] text-[var(--paper)]"
+                : "border-[var(--line)] text-[var(--muted)] hover:border-[var(--ember)] hover:text-[var(--ember)]"
+                }`}
             >
               {c.category}
             </Link>
@@ -81,7 +84,7 @@ export default async function BlogsPage({
         {featuredBlogs.length > 0 && page === 1 && (
           <FadeIn className="space-y-4 pt-8">
             <h3 className="font-mono text-xs tracking-[0.2em] uppercase text-[var(--ember)]">
-              Featured Reflections
+              Curated by Founder
             </h3>
             <ul className="space-y-1">
               {featuredBlogs.map((blog) => (
@@ -99,9 +102,12 @@ export default async function BlogsPage({
                         · by {blog.author.name ?? "Anonymous"}
                       </p>
                     </div>
-                    <span className="font-mono text-xs text-[var(--muted)] shrink-0 ml-4">
-                      {blog.views} views
-                    </span>
+                    <div className="flex items-center gap-4 shrink-0 ml-4">
+                      <span className="font-mono text-xs text-[var(--muted)]">
+                        {blog.views} views
+                      </span>
+                      {isAdmin && <DeleteBlogButton blogId={blog.id} title={blog.title} />}
+                    </div>
                   </Link>
                 </li>
               ))}
@@ -129,9 +135,12 @@ export default async function BlogsPage({
                       · by {blog.author.name ?? "Anonymous"}
                     </p>
                   </div>
-                  <span className="font-mono text-xs text-[var(--muted)] shrink-0 ml-4">
-                    {blog.views} views
-                  </span>
+                  <div className="flex items-center gap-4 shrink-0 ml-4">
+                    <span className="font-mono text-xs text-[var(--muted)]">
+                      {blog.views} views
+                    </span>
+                    {isAdmin && <DeleteBlogButton blogId={blog.id} title={blog.title} />}
+                  </div>
                 </Link>
               </li>
             ))}

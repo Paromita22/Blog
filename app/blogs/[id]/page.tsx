@@ -7,6 +7,7 @@ import PostActions from "./PostActions";
 import ScrollProgress from "../../components/ScrollProgress";
 import FadeIn from "../../components/FadeIn";
 import CommentsSection from "../../components/CommentsSection";
+import DeleteBlogButton from "../../components/DeleteBlogButton";
 
 export default async function BlogPost({
   params,
@@ -16,6 +17,7 @@ export default async function BlogPost({
   const { id } = await params;
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id;
+  const role = (session?.user as any)?.role;
 
   await prisma.blog
     .update({
@@ -45,29 +47,35 @@ export default async function BlogPost({
             <span className="inline-block px-4 py-1.5 rounded-full border border-[var(--ember)] text-[var(--ember)] text-xs font-mono tracking-widest uppercase">
               {blog.category}
             </span>
+
+            {role === "ADMIN" && (
+              <div>
+                <DeleteBlogButton blogId={blog.id} title={blog.title} redirectTo="/blogs" />
+              </div>
+            )}
             <h1 className="font-display leading-tight text-[clamp(2.5rem,5vw,4.5rem)]">
               {blog.title}
             </h1>
-          <p className="font-mono text-xs text-[var(--muted)] uppercase tracking-wider">
-            by {blog.author.name ?? "Anonymous"} · {blog.views} views
-          </p>
-        </div>
-        <div className="h-px bg-[var(--line)]" />
-        <div className="font-body text-lg leading-relaxed whitespace-pre-wrap text-[var(--paper)]">
-          {blog.content}
-        </div>
-        <div className="h-px bg-[var(--line)]" />
-        <PostActions
-          blogId={blog.id}
-          initialLiked={userId ? blog.likes.length > 0 : false}
-          initialBookmarked={userId ? blog.bookmarks.length > 0 : false}
-          initialLikeCount={blog._count.likes}
-          isLoggedIn={!!userId}
-        />
-        
-        <CommentsSection blogId={blog.id} />
+            <p className="font-mono text-xs text-[var(--muted)] uppercase tracking-wider">
+              by {blog.author.name ?? "Anonymous"} · {blog.views} views
+            </p>
+          </div>
+          <div className="h-px bg-[var(--line)]" />
+          <div className="font-body text-lg leading-relaxed whitespace-pre-wrap text-[var(--paper)] lg:text-justify">
+            {blog.content}
+          </div>
+          <div className="h-px bg-[var(--line)]" />
+          <PostActions
+            blogId={blog.id}
+            initialLiked={userId ? blog.likes.length > 0 : false}
+            initialBookmarked={userId ? blog.bookmarks.length > 0 : false}
+            initialLikeCount={blog._count.likes}
+            isLoggedIn={!!userId}
+          />
+
+          <CommentsSection blogId={blog.id} />
         </article>
       </FadeIn>
-    </PageShell>
+    </PageShell >
   );
 }
