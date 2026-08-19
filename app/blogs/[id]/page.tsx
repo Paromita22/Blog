@@ -14,18 +14,22 @@ export default async function BlogPost({
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id;
 
-  const blog = await prisma.blog
+  await prisma.blog
     .update({
       where: { id },
       data: { views: { increment: 1 } },
-      include: {
-        author: { select: { name: true } },
-        _count: { select: { likes: true } },
-        likes: userId ? { where: { userId } } : false,
-        bookmarks: userId ? { where: { userId } } : false,
-      },
     })
     .catch(() => null);
+
+  const blog = await prisma.blog.findUnique({
+    where: { id },
+    include: {
+      author: { select: { name: true } },
+      _count: { select: { likes: true } },
+      likes: userId ? { where: { userId } } : false,
+      bookmarks: userId ? { where: { userId } } : false,
+    },
+  });
 
   if (!blog) return notFound();
 
