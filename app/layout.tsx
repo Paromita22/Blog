@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fraunces.variable} ${newsreader.variable} ${plexMono.variable} font-body`}
+        className={`${fraunces.variable} ${newsreader.variable} ${plexMono.variable} font-body bg-[var(--ink)] text-[var(--paper)] transition-colors duration-300`}
       >
         <AuthProvider>{children}</AuthProvider>
       </body>

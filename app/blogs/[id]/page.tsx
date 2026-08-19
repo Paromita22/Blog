@@ -1,6 +1,9 @@
 import { prisma } from "../../../lib/prisma";
 import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 import PageShell from "../../components/PageShell";
+import PostActions from "./PostActions";
 
 export default async function BlogPost({
   params,
@@ -8,12 +11,19 @@ export default async function BlogPost({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const session = await getServerSession(authOptions);
+  const userId = (session?.user as any)?.id;
 
   const blog = await prisma.blog
     .update({
       where: { id },
       data: { views: { increment: 1 } },
-      include: { author: { select: { name: true } } },
+      include: {
+        author: { select: { name: true } },
+        _count: { select: { likes: true } },
+        likes: userId ? { where: { userId } } : false,
+        bookmarks: userId ? { where: { userId } } : false,
+      },
     })
     .catch(() => null);
 
@@ -37,6 +47,14 @@ export default async function BlogPost({
         <div className="font-body text-lg leading-relaxed whitespace-pre-wrap text-[var(--paper)]">
           {blog.content}
         </div>
+        <div className="h-px bg-[var(--line)]" />
+        <PostActions
+          blogId={blog.id}
+          initialLiked={userId ? blog.likes.length > 0 : false}
+          initialBookmarked={userId ? blog.bookmarks.length > 0 : false}
+          initialLikeCount={blog._count.likes}
+          isLoggedIn={!!userId}
+        />
       </article>
     </PageShell>
   );

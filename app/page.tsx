@@ -54,7 +54,7 @@ export default function Home() {
 
         <section
           ref={heroRef}
-          className="flex flex-col items-center justify-center min-h-screen px-8 text-center"
+          className="flex flex-col items-center justify-center min-h-screen px-8 pt-24 text-center"
         >
           <FloatingPaper />
           <motion.div
