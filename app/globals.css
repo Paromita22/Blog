@@ -8,20 +8,13 @@
   --ember-dim: #5c2620;
   --line: #2a2a28;
 }
-html,
-body {
-  background-color: var(--ink);
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-}
 [data-theme="light"] {
-  --ink: #f4f1ea;
-  --paper: #1a1815;
-  --muted: #6b6459;
-  --ember: #9a3b2e;
-  --ember-dim: #c77b6a;
-  --line: #dad4c6;
+  --ink: #dedad0;
+  --paper: #211e1a;
+  --muted: #6e675c;
+  --ember: #8a3528;
+  --ember-dim: #b8695a;
+  --line: #c7c2b4;
 }
 .font-display {
   font-family: var(--font-display), serif;

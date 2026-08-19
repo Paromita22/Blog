@@ -22,13 +22,26 @@ export default function PostActions({
   const [loading, setLoading] = useState(false);
 
   async function toggleLike() {
+    console.log(
+      "toggleLike called, blogId:",
+      blogId,
+      "isLoggedIn:",
+      isLoggedIn,
+    );
     if (!isLoggedIn) return;
     setLoading(true);
-    const res = await fetch(`/api/blogs/${blogId}/like`, { method: "POST" });
-    if (res.ok) {
-      const data = await res.json();
-      setLiked(data.liked);
-      setLikeCount((c) => (data.liked ? c + 1 : c - 1));
+    try {
+      const res = await fetch(`/api/blogs/${blogId}/like`, { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        setLiked(data.liked);
+        setLikeCount((c) => (data.liked ? c + 1 : c - 1));
+      } else {
+        const err = await res.json().catch(() => ({}));
+        console.error("Like failed:", res.status, err);
+      }
+    } catch (e) {
+      console.error("Like request error:", e);
     }
     setLoading(false);
   }
