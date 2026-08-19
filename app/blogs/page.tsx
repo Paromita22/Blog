@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "../../lib/prisma";
 import PageShell from "../components/PageShell";
+import FadeIn from "../components/FadeIn";
 
 const PAGE_SIZE = 6;
 
@@ -15,35 +16,43 @@ export default async function BlogsPage({
 
   const where = category ? { category } : {};
 
-  const [blogs, total, categories] = await Promise.all([
-    prisma.blog.findMany({
-      where,
-      orderBy: { createdAt: "desc" },
-      skip: (page - 1) * PAGE_SIZE,
-      take: PAGE_SIZE,
-      include: { author: { select: { name: true } } },
-    }),
-    prisma.blog.count({ where }),
-    prisma.blog.findMany({
-      select: { category: true },
-      distinct: ["category"],
-    }),
-  ]);
+  const featuredBlogs = await prisma.blog.findMany({
+    where: { ...where, author: { role: "ADMIN" } },
+    orderBy: { createdAt: "desc" },
+    take: 3, // Just show top 3 featured
+    include: { author: { select: { name: true } } },
+  });
+
+  const blogs = await prisma.blog.findMany({
+    where: { ...where, author: { role: "USER" } }, // regular blogs
+    orderBy: { createdAt: "desc" },
+    skip: (page - 1) * PAGE_SIZE,
+    take: PAGE_SIZE,
+    include: { author: { select: { name: true } } },
+  });
+
+  const total = await prisma.blog.count({
+    where: { ...where, author: { role: "USER" } },
+  });
+
+  const categories = await prisma.blog.findMany({
+    select: { category: true },
+    distinct: ["category"],
+  });
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
     <PageShell>
       <div className="max-w-3xl mx-auto px-8 space-y-10">
-        <div className="space-y-2">
+        <FadeIn className="space-y-2">
           <p className="font-mono text-xs tracking-[0.3em] uppercase text-[var(--muted)]">
             The Archive
           </p>
           <h1 className="font-display text-4xl md:text-5xl">All Writings</h1>
-        </div>
+        </FadeIn>
 
-        {/* Category filter — whimsical pill treatment */}
-        <div className="flex gap-3 flex-wrap">
+        <FadeIn className="flex gap-3 flex-wrap">
           <Link
             href="/blogs"
             className={`px-4 py-1.5 rounded-full border text-xs font-mono tracking-widest uppercase transition-colors ${
@@ -67,38 +76,74 @@ export default async function BlogsPage({
               {c.category}
             </Link>
           ))}
-        </div>
+        </FadeIn>
 
-        <ul className="space-y-1">
-          {blogs.map((blog) => (
-            <li key={blog.id}>
-              <Link
-                href={`/blogs/${blog.id}`}
-                className="group flex items-baseline justify-between border-b border-[var(--line)] py-6 hover:border-[var(--ember)] transition-colors"
-              >
-                <div>
-                  <h2 className="font-display text-2xl md:text-3xl group-hover:text-[var(--ember)] transition-colors">
-                    {blog.title}
-                  </h2>
-                  <p className="font-mono text-xs text-[var(--muted)] mt-2 uppercase tracking-wider">
-                    <span className="text-[var(--ember)]">{blog.category}</span>{" "}
-                    · by {blog.author.name ?? "Anonymous"}
-                  </p>
-                </div>
-                <span className="font-mono text-xs text-[var(--muted)] shrink-0 ml-4">
-                  {blog.views} views
-                </span>
-              </Link>
-            </li>
-          ))}
-          {blogs.length === 0 && (
-            <p className="text-[var(--muted)] italic font-body py-8">
-              No posts yet.
-            </p>
-          )}
-        </ul>
+        {featuredBlogs.length > 0 && page === 1 && (
+          <FadeIn className="space-y-4 pt-8">
+            <h3 className="font-mono text-xs tracking-[0.2em] uppercase text-[var(--ember)]">
+              Featured Reflections
+            </h3>
+            <ul className="space-y-1">
+              {featuredBlogs.map((blog) => (
+                <li key={blog.id}>
+                  <Link
+                    href={`/blogs/${blog.id}`}
+                    className="group flex items-baseline justify-between border-b border-[var(--ember)]/30 py-6 hover:border-[var(--ember)] transition-colors"
+                  >
+                    <div>
+                      <h2 className="font-display text-2xl md:text-3xl text-[var(--paper)] group-hover:text-[var(--ember)] transition-colors">
+                        {blog.title}
+                      </h2>
+                      <p className="font-mono text-xs text-[var(--muted)] mt-2 uppercase tracking-wider">
+                        <span className="text-[var(--ember)]">{blog.category}</span>{" "}
+                        · by {blog.author.name ?? "Anonymous"}
+                      </p>
+                    </div>
+                    <span className="font-mono text-xs text-[var(--muted)] shrink-0 ml-4">
+                      {blog.views} views
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </FadeIn>
+        )}
 
-        <div className="flex gap-6 justify-center font-mono text-xs tracking-widest uppercase pt-4">
+        <FadeIn className="space-y-4 pt-8">
+          <h3 className="font-mono text-xs tracking-[0.2em] uppercase text-[var(--muted)]">
+            Community Archive
+          </h3>
+          <ul className="space-y-1">
+            {blogs.map((blog) => (
+              <li key={blog.id}>
+                <Link
+                  href={`/blogs/${blog.id}`}
+                  className="group flex items-baseline justify-between border-b border-[var(--line)] py-6 hover:border-[var(--ember)] transition-colors"
+                >
+                  <div>
+                    <h2 className="font-display text-2xl md:text-3xl group-hover:text-[var(--ember)] transition-colors">
+                      {blog.title}
+                    </h2>
+                    <p className="font-mono text-xs text-[var(--muted)] mt-2 uppercase tracking-wider">
+                      <span className="text-[var(--ember)]">{blog.category}</span>{" "}
+                      · by {blog.author.name ?? "Anonymous"}
+                    </p>
+                  </div>
+                  <span className="font-mono text-xs text-[var(--muted)] shrink-0 ml-4">
+                    {blog.views} views
+                  </span>
+                </Link>
+              </li>
+            ))}
+            {blogs.length === 0 && (
+              <p className="text-[var(--muted)] italic font-body py-8">
+                No posts found here.
+              </p>
+            )}
+          </ul>
+        </FadeIn>
+
+        <FadeIn className="flex gap-6 justify-center font-mono text-xs tracking-widest uppercase pt-4">
           {page > 1 && (
             <Link
               href={`/blogs?page=${page - 1}${category ? `&category=${category}` : ""}`}
@@ -115,7 +160,7 @@ export default async function BlogsPage({
               Next →
             </Link>
           )}
-        </div>
+        </FadeIn>
       </div>
     </PageShell>
   );

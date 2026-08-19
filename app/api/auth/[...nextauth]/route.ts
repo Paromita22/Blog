@@ -76,6 +76,7 @@ export const authOptions: NextAuthOptions = {
               email: user.email!,
               name: user.name,
               password: "", // Google users don't need a local password
+              role: user.email === "paromitachanda04@gmail.com" ? "ADMIN" : "USER",
             },
           });
         }
@@ -92,8 +93,10 @@ export const authOptions: NextAuthOptions = {
         // Save the database UUID to the token
         if (dbUser) {
           token.id = dbUser.id;
+          token.role = dbUser.role;
         } else {
           token.id = user.id; // Fallback
+          token.role = "USER";
         }
       }
       return token;
@@ -101,6 +104,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user && token.id) {
         (session.user as any).id = token.id;
+        (session.user as any).role = token.role;
       }
       return session;
     },

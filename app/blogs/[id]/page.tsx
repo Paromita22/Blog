@@ -4,6 +4,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import PageShell from "../../components/PageShell";
 import PostActions from "./PostActions";
+import ScrollProgress from "../../components/ScrollProgress";
+import FadeIn from "../../components/FadeIn";
+import CommentsSection from "../../components/CommentsSection";
 
 export default async function BlogPost({
   params,
@@ -35,14 +38,16 @@ export default async function BlogPost({
 
   return (
     <PageShell>
-      <article className="max-w-2xl mx-auto px-8 space-y-8">
-        <div className="space-y-4">
-          <span className="inline-block px-4 py-1.5 rounded-full border border-[var(--ember)] text-[var(--ember)] text-xs font-mono tracking-widest uppercase">
-            {blog.category}
-          </span>
-          <h1 className="font-display text-4xl md:text-5xl leading-tight">
-            {blog.title}
-          </h1>
+      <ScrollProgress />
+      <FadeIn className="max-w-2xl mx-auto px-8 space-y-8">
+        <article className="space-y-8">
+          <div className="space-y-4">
+            <span className="inline-block px-4 py-1.5 rounded-full border border-[var(--ember)] text-[var(--ember)] text-xs font-mono tracking-widest uppercase">
+              {blog.category}
+            </span>
+            <h1 className="font-display leading-tight text-[clamp(2.5rem,5vw,4.5rem)]">
+              {blog.title}
+            </h1>
           <p className="font-mono text-xs text-[var(--muted)] uppercase tracking-wider">
             by {blog.author.name ?? "Anonymous"} · {blog.views} views
           </p>
@@ -59,7 +64,10 @@ export default async function BlogPost({
           initialLikeCount={blog._count.likes}
           isLoggedIn={!!userId}
         />
-      </article>
+        
+        <CommentsSection blogId={blog.id} />
+        </article>
+      </FadeIn>
     </PageShell>
   );
 }

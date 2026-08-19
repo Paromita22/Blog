@@ -12,6 +12,7 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [website, setWebsite] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,7 +25,7 @@ export default function SignUp() {
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, name, password }),
+      body: JSON.stringify({ email, name, password, website }),
     });
 
     setLoading(false);
@@ -106,6 +107,18 @@ export default function SignUp() {
               required
               className="w-full bg-transparent border border-[var(--line)] focus:border-[var(--ember)] outline-none rounded-sm p-3 text-sm transition-colors"
             />
+            {/* Honeypot field - hidden from users, visible to bots */}
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+              style={{ display: "none" }}
+              aria-hidden="true"
+            />
+
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}

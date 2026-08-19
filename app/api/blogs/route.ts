@@ -3,12 +3,12 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "../../../lib/prisma";
 import { blogSchema } from "@/lib/validation";
+import { rateLimit } from "@/lib/rateLimit";
 
 // POST: Create a new blog (PROTECTED ROUTE)
 export async function POST(req: Request) {
   try {
-    // 1. JWT AUTHENTICATION CHECK (CV Highlight: Private Route Protection)
-    // This securely reads the JWT token from the user's browser
+    // 1. JWT AUTHENTICATION CHECK
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
@@ -18,6 +18,15 @@ export async function POST(req: Request) {
       );
     }
 
+    // 2. Rate limit blog creation per user (5 posts per hour)
+    const userId = (session.user as any).id;
+    const { allowed } = rateLimit(`blog-create:${userId}`, 5, 60 * 60_000);
+    if (!allowed) {
+      return NextResponse.json(
+        { message: "You're posting too fast. Please wait before creating another post." },
+        { status: 429 },
+      );
+    }
     // 2. Parse and validate the incoming blog data
     const body = await req.json();
     const parsed = blogSchema.safeParse(body);
@@ -40,7 +49,7 @@ export async function POST(req: Request) {
         title,
         content,
         category,
-        authorId: (session.user as any).id, // Automatically grabs ID from JWT
+        authorId: userId,
       },
     });
 

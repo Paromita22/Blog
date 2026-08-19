@@ -31,7 +31,13 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
-    const { email, name, password } = parsed.data;
+    const { email, name, password, website } = parsed.data;
+
+    if (website) {
+      console.warn("Honeypot filled. Rejecting bot.");
+      // We can return a fake success to fool the bot, or a 400.
+      return NextResponse.json({ message: "Registration successful" }, { status: 200 });
+    }
 
     console.log("2. Checking for existing user...");
 
@@ -49,7 +55,12 @@ export async function POST(req: Request) {
 
     console.log("4. Saving to database...");
     const newUser = await prisma.user.create({
-      data: { email, name, password: hashedPassword },
+      data: {
+        email,
+        name,
+        password: hashedPassword,
+        role: email === "paromitachanda04@gmail.com" ? "ADMIN" : "USER",
+      },
     });
 
     console.log("5. Success! Returning response.");
