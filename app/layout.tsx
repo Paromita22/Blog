@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Newsreader, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, Newsreader, IBM_Plex_Mono, Germania_One } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./providers";
 
@@ -21,6 +21,11 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-mono",
   weight: ["400", "500"],
 });
+const germania = Germania_One({
+  subsets: ["latin"],
+  variable: "--font-accent",
+  weight: "400",
+});
 
 export const metadata: Metadata = {
   title: "PCJ Blogs",
@@ -35,12 +40,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fraunces.variable} ${newsreader.variable} ${plexMono.variable} font-body`}
-        style={{
-          backgroundColor: "var(--ink)",
-          color: "var(--paper)",
-          transition: "background-color 0.3s ease, color 0.3s ease",
-        }}
+        className={`${fraunces.variable} ${newsreader.variable} ${plexMono.variable} ${germania.variable} font-body`}
+        style={{ backgroundColor: "var(--ink)", color: "var(--paper)", transition: "background-color 0.3s ease, color 0.3s ease" }}
       >
         <AuthProvider>{children}</AuthProvider>
       </body>

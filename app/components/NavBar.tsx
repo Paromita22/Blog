@@ -67,10 +67,7 @@ export default function NavBar() {
       transition={{ duration: 0.6 }}
     >
       <div className="flex items-center justify-between">
-        <Link
-          href="/"
-          className="text-[var(--paper)] hover:text-[var(--ember)] transition-colors"
-        >
+        <Link href="/" className="font-accent text-base text-[var(--paper)] hover:text-[var(--ember)] transition-colors">
           PCJ Blogs
         </Link>
 

@@ -8,6 +8,7 @@
   --ember-dim: #5c2620;
   --line: #2a2a28;
 }
+
 [data-theme="light"] {
   --ink: #dedad0;
   --paper: #211e1a;
@@ -16,14 +17,21 @@
   --ember-dim: #b8695a;
   --line: #c7c2b4;
 }
+
 .font-display {
   font-family: var(--font-display), serif;
 }
+
 .font-body {
   font-family: var(--font-body), serif;
 }
+
 .font-mono {
   font-family: var(--font-mono), monospace;
+}
+
+.font-accent {
+  font-family: var(--font-accent), serif;
 }
 
 /* Fluid typography — scales smoothly from mobile to desktop */
@@ -31,12 +39,14 @@
   font-size: clamp(2.25rem, 5vw, 4.5rem);
   line-height: 1.1;
 }
+
 .fluid-h2 {
   font-size: clamp(1.5rem, 3vw, 2.75rem);
   line-height: 1.2;
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
