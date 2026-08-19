@@ -95,7 +95,7 @@ export default function NavBar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="sm:hidden overflow-hidden bg-[var(--ink)] mt-4"
+            className="md:hidden overflow-hidden bg-[var(--ink)] mt-4"
           >
             <div className="flex flex-col gap-6 py-6 px-4">{links}</div>
           </motion.div>

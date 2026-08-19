@@ -78,26 +78,26 @@ export default function PostActions({
       <button
         onClick={toggleLike}
         disabled={loading}
-        className={`flex items-center gap-2 font-mono text-xs tracking-widest uppercase transition-colors disabled:opacity-50 ${
+        className={`flex items-center gap-2 font-mono text-sm tracking-widest uppercase transition-colors disabled:opacity-50 ${
           liked
             ? "text-[var(--ember)]"
             : "text-[var(--muted)] hover:text-[var(--paper)]"
         }`}
       >
-        <span>{liked ? "♥" : "♡"}</span>
+        <span className="text-lg">{liked ? "♥" : "♡"}</span>
         {likeCount} {likeCount === 1 ? "Like" : "Likes"}
       </button>
 
       <button
         onClick={toggleBookmark}
         disabled={loading}
-        className={`flex items-center gap-2 font-mono text-xs tracking-widest uppercase transition-colors disabled:opacity-50 ${
+        className={`flex items-center gap-2 font-mono text-sm tracking-widest uppercase transition-colors disabled:opacity-50 ${
           bookmarked
             ? "text-[var(--ember)]"
             : "text-[var(--muted)] hover:text-[var(--paper)]"
         }`}
       >
-        <span>{bookmarked ? "★" : "☆"}</span>
+        <span className="text-lg">{bookmarked ? "★" : "☆"}</span>
         {bookmarked ? "Bookmarked" : "Bookmark"}
       </button>
     </div>

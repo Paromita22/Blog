@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# My Philosophy Blog
+
+A minimalist, high-performance web application built for writing and sharing philosophical reflections, poetry, and essays. Designed with a focus on typography, reading experience, and aesthetic minimalism.
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Database**: PostgreSQL
+- **ORM**: Prisma 7 (with `@prisma/adapter-pg`)
+- **Authentication**: NextAuth.js (v4) - Google OAuth & Credentials Provider
+- **Styling**: Tailwind CSS v4
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+
+## Core Features
+
+- **Authentication**: Secure login and registration using Google OAuth or traditional Email/Password.
+- **Reading Experience**: Distraction-free, typography-focused reading layout with view counters.
+- **Engagement**: Users can like and bookmark posts.
+- **Categorization**: Blogs are categorized and filterable on the archive page.
+- **Author Dashboard**: A protected area for authors to manage, edit, and publish their writings.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 20.19.0+
+- PostgreSQL database
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Installation
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **Clone the repository**
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Environment Variables**
+   Create a `.env` file in the root directory and configure the following variables:
+   ```env
+   DATABASE_URL="postgresql://user:password@localhost:5432/mydb"
+   NEXTAUTH_SECRET="your-super-secret-string"
+   NEXTAUTH_URL="http://localhost:3000"
+   GOOGLE_CLIENT_ID="your-google-client-id"
+   GOOGLE_CLIENT_SECRET="your-google-client-secret"
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Database Setup**
+   Run Prisma migrations to set up your database schema:
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
 
-## Learn More
+5. **Start the Development Server**
+   ```bash
+   npm run dev
+   ```
+   The application will be available at `http://localhost:3000`.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+MIT
