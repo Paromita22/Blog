@@ -84,7 +84,17 @@ export const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        // Fetch the user from the database to ensure we get the UUID
+        const dbUser = await prisma.user.findUnique({
+          where: { email: user.email! }
+        });
+
+        // Save the database UUID to the token
+        if (dbUser) {
+          token.id = dbUser.id;
+        } else {
+          token.id = user.id; // Fallback
+        }
       }
       return token;
     },
