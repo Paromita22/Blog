@@ -51,6 +51,9 @@ export default function Guidelines() {
               <li>Spam, advertising, or link-dropping unrelated to the post</li>
               <li>Plagiarized writing presented as your own</li>
               <li>AI generated writing</li>
+              <li>
+                Pretending to be someone else and writing under their name
+              </li>
             </ul>
           </div>
 
@@ -59,9 +62,9 @@ export default function Guidelines() {
               Moderation
             </h2>
             <p className="font-body text-[var(--muted)] leading-relaxed">
-              Posts and comments violating these guidelines may be removed by an
-              admin without notice. Repeated violations may result in account
-              restrictions.
+              Posts and comments violating these guidelines or due to some other
+              reasonable issues may be removed by an admin without notice.
+              Repeated violations may result in account restrictions.
             </p>
           </div>
         </FadeIn>
