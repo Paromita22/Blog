@@ -39,29 +39,34 @@ export default function PaperBurst() {
       return;
     }
 
-    const generated: Piece[] = Array.from({ length: 18 }).map((_, i) => {
-      const fromLeft = i % 2 === 0;
-      return {
-        startX: fromLeft
-          ? -700 - Math.random() * 200
-          : 700 + Math.random() * 200,
-        startY: Math.random() * 500 - 100,
-        crossX: (Math.random() - 0.5) * 250,
-        crossY: Math.random() * 300 - 100,
-        splitX: fromLeft
-          ? -800 - Math.random() * 200
-          : 800 + Math.random() * 200,
-        splitY: Math.random() * 300 - 150,
-        size: 40 + Math.random() * 60,
-        paperShape: paperShapes[i % paperShapes.length],
-        delay: Math.random() * (DURATION * 0.1),
-        survives: i === 3 || i === 11,
-      };
-    });
+    const isMobile = window.matchMedia("(max-width: 640px)").matches;
+    const pieceCount = isMobile ? 8 : 18;
+
+    const generated: Piece[] = Array.from({ length: pieceCount }).map(
+      (_, i) => {
+        const fromLeft = i % 2 === 0;
+        return {
+          startX: fromLeft
+            ? -700 - Math.random() * 200
+            : 700 + Math.random() * 200,
+          startY: Math.random() * 500 - 100,
+          crossX: (Math.random() - 0.5) * 250,
+          crossY: Math.random() * 300 - 100,
+          splitX: fromLeft
+            ? -800 - Math.random() * 200
+            : 800 + Math.random() * 200,
+          splitY: Math.random() * 300 - 150,
+          size: 40 + Math.random() * 60,
+          paperShape: paperShapes[i % paperShapes.length],
+          delay: Math.random() * 0.6,
+          survives: i === 3 || i === 11,
+        };
+      },
+    );
     setPieces(generated);
     setPhase("playing");
 
-    const timer = setTimeout(() => setPhase("settled"), (DURATION + 1) * 1000);
+    const timer = setTimeout(() => setPhase("settled"), (9 + 1) * 1000);
     return () => clearTimeout(timer);
   }, []);
 
