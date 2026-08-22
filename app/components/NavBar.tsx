@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import SearchBar from "./SearchBar";
 
 export default function NavBar() {
   const { data: session } = useSession();
@@ -55,6 +56,7 @@ export default function NavBar() {
           Sign In
         </Link>
       )}
+      <SearchBar />
       <ThemeToggle />
     </>
   );
@@ -67,7 +69,10 @@ export default function NavBar() {
       transition={{ duration: 0.6 }}
     >
       <div className="flex items-center justify-between">
-        <Link href="/" className="font-accent text-base text-[var(--paper)] hover:text-[var(--ember)] transition-colors">
+        <Link
+          href="/"
+          className="font-accent text-base text-[var(--paper)] hover:text-[var(--ember)] transition-colors"
+        >
           PCJ Blogs
         </Link>
 
