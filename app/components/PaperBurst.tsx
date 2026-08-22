@@ -78,7 +78,11 @@ export default function PaperBurst() {
         <motion.div
           key={i}
           className="absolute"
-          style={{ width: p.size, height: p.size }}
+          style={{
+            width: p.size,
+            height: p.size,
+            willChange: "transform, opacity",
+          }}
           initial={{ x: p.startX, y: p.startY, opacity: 0, scale: 0.7 }}
           animate={
             phase === "playing"

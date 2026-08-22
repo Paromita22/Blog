@@ -6,7 +6,7 @@ export default function InkBloom() {
   return (
     <svg
       viewBox="0 0 800 800"
-      className="absolute inset-0 w-full h-full opacity-[0.35] pointer-events-none"
+      className="ink-bloom-svg absolute inset-0 w-full h-full opacity-[0.35] pointer-events-none"
       preserveAspectRatio="xMidYMid slice"
     >
       <motion.circle
