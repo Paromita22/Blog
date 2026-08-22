@@ -12,6 +12,10 @@ import { useRef } from "react";
 import FloatingPaper from "./components/FloatingPaper";
 import PaperBurst from "./components/PaperBurst";
 import AuthorNote from "./components/AuthorNote";
+import PageProgress from "./components/PageProgress";
+import StatsStrip from "./components/StatsStrip";
+import CategoryShowcase from "./components/CategoryShowcase";
+import WriteCTA from "./components/WriteCTA";
 
 const headline = "Reluctant Realist's Tales.";
 
@@ -28,19 +32,9 @@ export default function Home() {
   return (
     <>
       <NavBar />
+      <PageProgress />
       <PaperBurst />
       <main className="relative min-h-screen bg-[var(--ink)] text-[var(--paper)] overflow-hidden">
-        {/* Manuscript margin rule — signature element */}
-        <div className="fixed left-6 top-0 bottom-0 w-px bg-[var(--line)] hidden md:block">
-          <motion.div
-            className="absolute top-0 left-0 w-px bg-[var(--ember)]"
-            style={{ height: "100%" }}
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ duration: 2, ease: "easeOut", delay: 0.3 }}
-          />
-        </div>
-
         {/* subtle grain texture */}
         <div
           className="pointer-events-none fixed inset-0 opacity-[0.03] mix-blend-overlay hidden sm:block"
@@ -141,7 +135,10 @@ export default function Home() {
         </section>
       </main>
       <AuthorNote />
+      <StatsStrip />
+      <CategoryShowcase />
       <FeaturedBlogs />
+      <WriteCTA />
       <Footer />
     </>
   );
