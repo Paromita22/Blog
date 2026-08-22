@@ -61,7 +61,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              Notes from a disorganized mind
+              Notes from disorganized minds
             </motion.p>
 
             <h1 className="font-display text-5xl md:text-7xl font-medium tracking-tight leading-[1.05]">
@@ -88,8 +88,8 @@ export default function Home() {
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1.1 }}
             >
-              Like everything else, they'd burn up in this intense hatred I have
-              for the world.
+              Even if stardust reaches back to the stars, does it ever feel
+              whole?
             </motion.p>
 
             <motion.div

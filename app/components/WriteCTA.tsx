@@ -29,10 +29,11 @@ export default function WriteCTA() {
         </h2>
 
         <p className="font-body text-base leading-relaxed text-[var(--muted)]">
-            
-          This started as one person's untidy notebook. It doesn't have to stay
-          that way. If you've got a half-formed thought, a rant, a poem you're
-          embarrassed by — there's a page here with your name on it.
+          Just documenting shit often helps, at least for me. What is life if
+          not witnessed anyway? I have no clue if your thoughts are valued or
+          not. What I can do is provide you with a moody platform to document
+          your life, opinions or maybe geeky knowledge stuff and some
+          interesting witnesses.
         </p>
 
         <Link
