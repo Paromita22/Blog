@@ -81,7 +81,7 @@ Comment — id, content, userId → User, blogId → Blog, timestamps
 Subscriber — id, email (unique), unsubscribeToken (unique)
 
 
-All foreign keys cascade on delete (deleting a user or blog cleanly removes dependent rows).
+All foreign keys cascade on delete (deleting a user or blog cleanly removes dependent rows)
 
 ---
 
