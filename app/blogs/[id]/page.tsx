@@ -61,7 +61,7 @@ export default async function BlogPost({
             </p>
           </div>
           <div className="h-px bg-[var(--line)]" />
-          <div className="font-body text-lg leading-relaxed whitespace-pre-wrap text-[var(--paper)] lg:text-justify">
+          <div className="font-reading text-xl leading-relaxed whitespace-pre-wrap text-[var(--paper)] lg:text-justify">
             {blog.content}
           </div>
           <div className="h-px bg-[var(--line)]" />

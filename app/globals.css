@@ -31,7 +31,15 @@
 }
 
 .font-accent {
-  font-family: var(--font-accent), serif;
+  font-family: var(--font-accent), cursive;
+}
+
+.font-logo {
+  font-family: var(--font-logo), serif;
+}
+
+.font-reading {
+  font-family: var(--font-reading), serif;
 }
 
 /* Fluid typography — scales smoothly from mobile to desktop */
@@ -46,6 +54,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -79,6 +88,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
 @media (max-width: 640px) {
   .ink-bloom-svg circle {
     filter: blur(30px) !important;

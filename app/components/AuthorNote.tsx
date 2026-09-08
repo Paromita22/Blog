@@ -39,16 +39,16 @@ export default function AuthorNote() {
         viewport={{ once: true }}
         transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
       >
-        <p className="font-mono text-xs tracking-[0.3em] uppercase text-[var(--muted)]">
+        <p className="font-display text-xs tracking-[0.2em] uppercase text-[var(--muted)]">
           A Note From the Creator
         </p>
 
-        <p className="font-body italic text-xl md:text-2xl leading-relaxed text-[var(--paper)]">
+        <p className="font-accent text-4xl md:text-5xl leading-[1.3] text-[var(--paper)]">
           "Sticking around to see how this mess unfolds, and if I can beat the
           world in the race to ruin everything"
         </p>
 
-        <p className="font-body text-base leading-relaxed text-[var(--muted)] lg:text-justify">
+        <p className="font-reading text-lg leading-relaxed text-[var(--muted)] lg:text-justify">
           The idea originated from the desire for belonging. If not the writer,
           perhaps the writings should have a place of their own. I am here just
           to seek a retreat from the crowded feeds and endless scroll to a

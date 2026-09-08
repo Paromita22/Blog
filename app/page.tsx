@@ -17,7 +17,7 @@ import StatsStrip from "./components/StatsStrip";
 import CategoryShowcase from "./components/CategoryShowcase";
 import WriteCTA from "./components/WriteCTA";
 
-const headline = "Reluctant Realist's Tales.";
+const headline = "Reluctant Realists' Tales.";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -56,15 +56,15 @@ export default function Home() {
             style={{ y: heroY, opacity: heroOpacity }}
           >
             <motion.p
-              className="font-mono text-xs tracking-[0.3em] uppercase text-[var(--muted)]"
+              className="font-display text-sm md:text-base tracking-[0.2em] uppercase text-[var(--muted)]"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              Notes from disorganized minds
+
             </motion.p>
 
-            <h1 className="font-display text-5xl md:text-7xl font-medium tracking-tight leading-[1.05]">
+            <h1 className="font-accent text-6xl md:text-8xl lg:text-9xl font-normal leading-[1.1] py-2">
               {headline.split(" ").map((word, i) => (
                 <motion.span
                   key={i}
@@ -83,7 +83,7 @@ export default function Home() {
             </h1>
 
             <motion.p
-              className="font-body italic text-lg md:text-xl text-[var(--muted)] leading-relaxed"
+              className="font-body italic text-xl md:text-2xl text-[var(--muted)] leading-relaxed"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1.1 }}

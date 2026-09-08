@@ -12,7 +12,10 @@ export default function StatsStrip() {
 
   useEffect(() => {
     fetch("/api/stats")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch stats");
+        return res.json();
+      })
       .then(setStats)
       .catch(() => setStats(null));
   }, []);

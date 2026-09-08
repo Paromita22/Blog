@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { Fraunces, Newsreader, IBM_Plex_Mono, Germania_One } from "next/font/google";
+import { IBM_Plex_Mono, Cinzel, Great_Vibes, Cormorant_Garamond, Germania_One, Lora } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./providers";
 
-const fraunces = Fraunces({
+const cinzel = Cinzel({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["400", "500", "600"],
+  weight: ["400", "600"],
 });
 
-const newsreader = Newsreader({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-body",
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
-  weight: ["400", "500"],
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -21,10 +21,24 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-mono",
   weight: ["400", "500"],
 });
-const germania = Germania_One({
+
+const greatVibes = Great_Vibes({
   subsets: ["latin"],
   variable: "--font-accent",
+  weight: ["400"],
+});
+
+const germania = Germania_One({
+  subsets: ["latin"],
+  variable: "--font-logo",
   weight: "400",
+});
+
+const lora = Lora({
+  subsets: ["latin"],
+  variable: "--font-reading",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -40,7 +54,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fraunces.variable} ${newsreader.variable} ${plexMono.variable} ${germania.variable} font-body`}
+        className={`${cinzel.variable} ${cormorant.variable} ${plexMono.variable} ${greatVibes.variable} ${germania.variable} ${lora.variable} font-body`}
         style={{ backgroundColor: "var(--ink)", color: "var(--paper)", transition: "background-color 0.3s ease, color 0.3s ease" }}
       >
         <AuthProvider>{children}</AuthProvider>

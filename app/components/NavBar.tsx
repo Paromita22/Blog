@@ -71,7 +71,7 @@ export default function NavBar() {
       <div className="flex items-center justify-between">
         <Link
           href="/"
-          className="font-accent text-base text-[var(--paper)] hover:text-[var(--ember)] transition-colors"
+          className="font-logo text-base text-[var(--paper)] hover:text-[var(--ember)] transition-colors"
         >
           PCJ Blogs
         </Link>
