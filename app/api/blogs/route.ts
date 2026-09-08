@@ -41,7 +41,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { title, content, category } = parsed.data;
+    const { title, content, category, theme } = parsed.data;
 
     // 3. Save the blog to the database and link it to the logged-in user
     const newBlog = await prisma.blog.create({
@@ -49,6 +49,7 @@ export async function POST(req: Request) {
         title,
         content,
         category,
+        theme: theme || "default",
         authorId: userId,
       },
     });

@@ -8,6 +8,7 @@ import ScrollProgress from "../../components/ScrollProgress";
 import FadeIn from "../../components/FadeIn";
 import CommentsSection from "../../components/CommentsSection";
 import DeleteBlogButton from "../../components/DeleteBlogButton";
+import VintageScroll from "../../components/VintageScroll";
 
 export default async function BlogPost({
   params,
@@ -38,6 +39,8 @@ export default async function BlogPost({
 
   if (!blog) return notFound();
 
+  const isVintage = blog.theme === "vintage-scroll";
+
   return (
     <PageShell>
       <ScrollProgress />
@@ -60,11 +63,19 @@ export default async function BlogPost({
               by {blog.author.name ?? "Anonymous"} · {blog.views} views
             </p>
           </div>
+
           <div className="h-px bg-[var(--line)]" />
-          <div className="font-reading text-xl leading-relaxed whitespace-pre-wrap text-[var(--paper)] lg:text-justify">
-            {blog.content}
-          </div>
+
+          {isVintage ? (
+            <VintageScroll content={blog.content} />
+          ) : (
+            <div className="font-reading text-xl leading-relaxed whitespace-pre-wrap text-[var(--paper)] lg:text-justify">
+              {blog.content}
+            </div>
+          )}
+
           <div className="h-px bg-[var(--line)]" />
+
           <PostActions
             blogId={blog.id}
             initialLiked={userId ? blog.likes.length > 0 : false}
@@ -76,6 +87,6 @@ export default async function BlogPost({
           <CommentsSection blogId={blog.id} />
         </article>
       </FadeIn>
-    </PageShell >
+    </PageShell>
   );
 }

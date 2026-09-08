@@ -11,4 +11,5 @@ export const blogSchema = z.object({
   title: z.string().min(1).max(200),
   content: z.string().min(1).max(50000),
   category: z.string().min(1).max(50),
+  theme: z.string().optional(),
 });

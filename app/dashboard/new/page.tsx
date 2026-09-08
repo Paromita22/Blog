@@ -8,6 +8,7 @@ export default function NewPost() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
+  const [theme, setTheme] = useState("default");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
 
@@ -18,7 +19,7 @@ export default function NewPost() {
     const res = await fetch("/api/blogs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content, category }),
+      body: JSON.stringify({ title, content, category, theme }),
     });
 
     if (res.ok) {
@@ -53,6 +54,14 @@ export default function NewPost() {
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         />
+        <select
+          className="w-full bg-transparent border border-[var(--line)] focus:border-[var(--ember)] outline-none rounded-sm p-3 text-sm transition-colors"
+          value={theme}
+          onChange={(e) => setTheme(e.target.value)}
+        >
+          <option value="default" className="bg-[var(--ink)]">Default Theme</option>
+          <option value="vintage-scroll" className="bg-[var(--ink)]">Vintage Scroll Design</option>
+        </select>
         <textarea
           className="w-full bg-transparent border border-[var(--line)] focus:border-[var(--ember)] outline-none rounded-sm p-3 h-64 font-body text-base transition-colors"
           placeholder="Write your thoughts..."

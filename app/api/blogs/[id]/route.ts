@@ -48,11 +48,11 @@ export async function PUT(
       { status: 400 },
     );
   }
-  const { title, content, category } = parsed.data;
+  const { title, content, category, theme } = parsed.data;
 
   const updated = await prisma.blog.update({
     where: { id },
-    data: { title, content, category },
+    data: { title, content, category, theme: theme || "default" },
   });
 
   return NextResponse.json(updated, { status: 200 });

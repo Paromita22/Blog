@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Cinzel, Great_Vibes, Cormorant_Garamond, Germania_One, Lora } from "next/font/google";
+import { IBM_Plex_Mono, Cinzel, Great_Vibes, Cormorant_Garamond, Germania_One, Lora, IM_Fell_English } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./providers";
 
@@ -41,6 +41,13 @@ const lora = Lora({
   style: ["normal", "italic"],
 });
 
+const imFell = IM_Fell_English({
+  subsets: ["latin"],
+  variable: "--font-vintage",
+  weight: "400",
+  style: ["normal", "italic"],
+});
+
 export const metadata: Metadata = {
   title: "PCJ Blogs",
   description: "A digital space for scattered thoughts.",
@@ -54,7 +61,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${cinzel.variable} ${cormorant.variable} ${plexMono.variable} ${greatVibes.variable} ${germania.variable} ${lora.variable} font-body`}
+        className={`${cinzel.variable} ${cormorant.variable} ${plexMono.variable} ${greatVibes.variable} ${germania.variable} ${lora.variable} ${imFell.variable} font-body`}
         style={{ backgroundColor: "var(--ink)", color: "var(--paper)", transition: "background-color 0.3s ease, color 0.3s ease" }}
       >
         <AuthProvider>{children}</AuthProvider>

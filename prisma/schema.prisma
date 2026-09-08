@@ -21,28 +21,29 @@ model User {
   id        String     @id @default(uuid())
   email     String     @unique
   name      String?
-  password  String     // For secure login
-  blogs     Blog[]     // Blogs written by this user
+  password  String // For secure login
+  blogs     Blog[] // Blogs written by this user
   bookmarks Bookmark[] // Wishlisted/Bookmarked blogs
-  likes     Like[]     // Blogs liked by this user
-  comments  Comment[]  // Comments written by this user
+  likes     Like[] // Blogs liked by this user
+  comments  Comment[] // Comments written by this user
   role      Role       @default(USER)
   createdAt DateTime   @default(now())
 }
 
 model Blog {
-  id          String     @id @default(uuid())
-  title       String
-  content     String     @db.Text
-  category    String     // e.g., "Philosophy", "Poetry", "Life"
-  views       Int        @default(0) // For sorting popular blogs
-  authorId    String
-  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  bookmarks   Bookmark[]
-  likes       Like[]
-  comments    Comment[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id        String     @id @default(uuid())
+  title     String
+  content   String     @db.Text
+  category  String // e.g., "Philosophy", "Poetry", "Life"
+  views     Int        @default(0) // For sorting popular blogs
+  authorId  String
+  author    User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  bookmarks Bookmark[]
+  likes     Like[]
+  comments  Comment[]
+  theme       String     @default("default")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Bookmark {

@@ -42,6 +42,41 @@
   font-family: var(--font-reading), serif;
 }
 
+.font-vintage {
+  font-family: var(--font-vintage), serif;
+}
+
+.vintage-scroll-content textarea,
+.vintage-scroll-content input {
+  color: #23150c !important;
+  border-color: #8c6841 !important;
+  background-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.vintage-scroll-content textarea::placeholder,
+.vintage-scroll-content input::placeholder {
+  color: #7d5e3c !important;
+}
+
+.vintage-scroll-content button[type="submit"] {
+  background-color: #7a2419 !important;
+  color: #f7e6c4 !important;
+}
+
+.vintage-scroll-content button[type="submit"]:hover {
+  background-color: #5c1810 !important;
+}
+
+.vintage-scroll-content p,
+.vintage-scroll-content span,
+.vintage-scroll-content h3 {
+  color: #23150c !important;
+}
+
+.vintage-scroll-content .border-\[var\(--line\)\] {
+  border-color: rgba(125, 87, 50, 0.3) !important;
+}
+
 /* Fluid typography — scales smoothly from mobile to desktop */
 .fluid-h1 {
   font-size: clamp(2.25rem, 5vw, 4.5rem);
