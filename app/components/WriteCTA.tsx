@@ -28,7 +28,7 @@ export default function WriteCTA() {
           Got something to say?
         </h2>
 
-        <p className="font-body text-base leading-relaxed text-[var(--muted)]">
+        <p className="font-reading text-lg leading-relaxed text-[var(--muted)] lg:text-justify">
           Just documenting shit often helps, at least for me. What is life if
           not witnessed anyway? I have no clue if your thoughts are valued or
           not. What I can do is provide you with a moody platform to document
