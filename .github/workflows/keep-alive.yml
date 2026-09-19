@@ -2,16 +2,47 @@ name: Supabase Keep-Alive
 
 on:
   schedule:
-    # Runs at 00:00 UTC every 3 days
-    - cron: '0 0 */3 * *'
+    # Runs 3x/day at low-traffic hours (UTC): 03:00, 10:00, 18:00
+    - cron: '0 3 * * *'
+    - cron: '0 10 * * *'
+    - cron: '0 18 * * *'
   workflow_dispatch: # Allows manual trigger from Actions tab
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Supabase API
+      - name: Query Supabase database (keep-alive)
         run: |
-          curl -i -X GET "${{ secrets.SUPABASE_URL }}" \
+          # Replace "keep_alive" below with the table you want to query.
+          TABLE="keep_alive"
+
+          # Strip any trailing slash from the URL secret so we never end up
+          # with a double slash (e.g. ".co//rest/v1/...") which PostgREST
+          # rejects with a "PGRST125 Invalid path" error.
+          RAW_URL="${{ secrets.SUPABASE_URL }}"
+          CLEAN_URL="${RAW_URL%/}"
+          # If the secret already has /rest/v1 baked in, strip it so we
+          # don't end up appending it twice below.
+          CLEAN_URL="${CLEAN_URL%/rest/v1}"
+
+          echo "URL length (sanity check only): ${#CLEAN_URL}"
+
+          HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" \
+            -X GET "${CLEAN_URL}/rest/v1/${TABLE}?select=*&limit=1" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Cache-Control: no-cache")
+
+          echo "HTTP status: $HTTP_STATUS"
+          echo "Response body:"
+          cat response.json
+
+          # Only treat 2xx as success. 401/403/404 etc. will fail the job
+          # instead of silently showing green.
+          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
+            echo "::error::Supabase keep-alive request failed with status $HTTP_STATUS"
+            exit 1
+          fi
+
+          echo "Keep-alive database query succeeded."
